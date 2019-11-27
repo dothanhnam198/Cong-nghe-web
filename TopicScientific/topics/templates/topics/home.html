@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>List</h1>
+{% for topic in topics %}
+    <ul><a href="#">Topic: {{topic.topic_name}}</a>
+    <li class="list-group-item">Author: {{topic.author}}</li>
+    <li class="list-group-item">Content: {{topic.content | safe |linebreaks}}</li>
+
+    </ul>
+{% endfor %}
+
+
+{% endblock %}
