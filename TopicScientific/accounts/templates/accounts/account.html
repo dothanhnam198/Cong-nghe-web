@@ -33,4 +33,19 @@
 <div class="d-flex">
     <a href="{% url 'password_change' %}">Change Password</a>
 </div>
+
+<div class="container">
+    <h3>Topic list:</h3>
+    {% if topics %}
+        <ul class="list-group">
+        {% for topic in topics %}
+          <a href="{% url 'topic:detail' topic.slug %}" style="text-decoration: none;"><li class="list-group-item">{{topic}}</li></a>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p>You have no topic . Create a topic <a href="{% url 'topic:create' %}">here</a>.</p>
+    <p>{{topic}}</p>
+      {% endif %}
+</div>
+
 {% endblock content %}

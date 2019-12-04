@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Title: {{ topic.topic_name }}</h1>
+<h1>Author: {{ topic.author }}</h1>
+<h1>Research {{ topic.research_direction }}</h1>
+<h1>Type {{ topic.type }}</h1>
+<h1>Process {{ topic.process }}</h1>
+<h1>Rate {{ topic.rate }}</h1>
+<h1>Review Date {{ topic.review_date }}</h1>
+<h1>Content {{ topic.content |safe|linebreaks }}</h1>
+{% if topic.author == request.user %}
+<a href="{% url 'topic:edit' topic.slug %}">Edit</a>
+{% endif %}
+<h1> {{ topic.date_upload }} by {{ topic.author.username }}</h1>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+            {% if success_message %}
+				<h3 style="color:green; text-align: center;">{{success_message}}</h3>
+			{% endif %}
+        <form method="POST" class="create-form">{% csrf_token %}
+        {{ form.as_p }}
+
+                {% for field in form %}
+					<p>
+						{% for error in field.errors %}
+							<p style="color: red">{{ error }}</p>
+						{% endfor %}
+					</p>
+				{% endfor %}
+				{% if form.non_field_errors %}
+					<div style="color: red">
+						<p>{{form.non_field_errors}}</p>
+					</div>
+				{% endif %}
+
+        <button type="submit" class="save btn btn-default">Edit</button>
+        </form>
+
+{% endblock content %}

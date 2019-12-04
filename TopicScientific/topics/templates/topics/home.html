@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<a href="{% url 'topic:create' %}">Create topic</a>
 <h1>List</h1>
 {% for topic in topics %}
-    <ul><a href="#">Topic: {{topic.topic_name}}</a>
-    <li class="list-group-item">Author: {{topic.author}}</li>
+    <ul><a href="{% url 'topic:detail' topic.slug %}">Topic: {{topic.topic_name}}</a>
+    <li class="list-group-item">Author: {{topic.author.username}}</li>
     <li class="list-group-item">Content: {{topic.content | safe |linebreaks}}</li>
 
     </ul>
+{% if  request.user.is_superuser %}
+<a href="{% url 'topic:edit_superuser' topic.slug %}">Edit</a>
+{% endif %}
 {% endfor %}
 
 

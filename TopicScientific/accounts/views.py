@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 
 from accounts.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
+from topics.models import topic
 # Create your views here.
 
 
@@ -58,20 +59,31 @@ def account_view(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    context ={}
+    context = {}
 
     if request.POST:
         form = AccountUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
+            form.initial = {
+                "email": request.POST['email'],
+                "username": request.POST['username'],
+            }
             form.save()
+            context['success_message'] = "Updated"
     else:
-        form =AccountUpdateForm(
+        form = AccountUpdateForm(
                 initial= {
                     "email": request.user.email,
                     "username": request.user.username,
                 }
         )
     context['account_form'] = form
+
+    topics = topic.objects.filter(author=request.user)
+    context['topics'] = topics
+
     return render(request, 'accounts/account.html', context)
 
 
+def must_authenticate_view(request):
+    return render(request, 'accounts/must_authenticate.html', {})

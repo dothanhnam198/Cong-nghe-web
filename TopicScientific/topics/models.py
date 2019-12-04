@@ -33,11 +33,12 @@ class topic(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     research_direction = models.ForeignKey(research_direction, on_delete=models.CASCADE)
     type = models.ForeignKey(type, on_delete=models.CASCADE)
-    rate = models.ForeignKey(rate, on_delete=models.CASCADE)
-    review_date = models.DateTimeField()
+    rate = models.ForeignKey(rate, on_delete=models.CASCADE, blank=True, null=True)
+    review_date = models.CharField(max_length=50, blank=True, null=True)
     content = models.TextField()
     date_upload = models.DateField(auto_now_add=True)
     slug = models.SlugField(blank=True, unique=True)
+    process = models.CharField(max_length=10, default=0)
 
     def __str__(self):
         return self.topic_name
@@ -45,8 +46,10 @@ class topic(models.Model):
     def snippet(self):
         return self.content[:50] + '...'
 
+
 def pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify(instance.author.username + ".." + instance.topic_name)
+
 
 pre_save.connect(pre_save_receiver, sender=topic)
